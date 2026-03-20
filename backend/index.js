@@ -23,6 +23,8 @@ app.use(
   })
 );
 
+app.set("trust proxy", 1);
+
 app.use(
   session({
     secret: "mysecretkey",
@@ -30,8 +32,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax", // 🔥 ADD THIS (VERY IMPORTANT)
+      secure: true,       // 🔥 HTTPS required
+      sameSite: "none",   // 🔥 cross-origin fix
     },
   })
 );
