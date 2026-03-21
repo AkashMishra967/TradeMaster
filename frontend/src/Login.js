@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Login = () => {
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,22 +15,20 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3002/login",
+        "https://trademaster-backend-u6tl.onrender.com/login",
         formData,
-        { withCredentials: true }
+        { withCredentials: true }  // ✅ session cookie ke liye zaroori
       );
-
-      console.log(res.data);
 
       alert(res.data.message);
 
-      // ✅ token store (important)
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
+      // ❌ token wali lines hata di — session use ho raha hai
+      // if (res.data.token) {
+      //   localStorage.setItem("token", res.data.token);
+      // }
 
-      // 🔥 REDIRECT TO DASHBOARD
-      window.location.href = "http://localhost:3001";
+      // ✅ Dashboard pe redirect
+      window.location.href = "https://trademaster-4.onrender.com";
 
       setFormData({ email: "", password: "" });
 
@@ -67,7 +64,7 @@ const Login = () => {
         </h2>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
-          
+
           <input
             type="email"
             name="email"

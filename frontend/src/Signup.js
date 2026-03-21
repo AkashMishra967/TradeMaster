@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,25 +19,16 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3002/signup",
+        "https://trademaster-backend-u6tl.onrender.com/signup",
         formData,
-        { withCredentials: true }
+        { withCredentials: true }  // ✅ session ke liye zaroori
       );
-
-      console.log(res.data);
 
       alert(res.data.message);
 
-      // ✅ token store
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
-
-      // 🔥 REDIRECT TO DASHBOARD (IMPORTANT FIX)
-      window.location.href = "http://localhost:3001";
-
-      // form reset (optional)
-      setFormData({ username: "", email: "", password: "" });
+      // ✅ Session-based hai, token store nahi karna
+      // Signup ke baad login page pe bhejo
+      navigate("/login");
 
     } catch (err) {
       console.error(err);
