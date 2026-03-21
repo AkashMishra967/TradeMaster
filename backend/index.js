@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["https://trademaster-5.onrender.com", "https://trademaster-4.onrender.com"],
     credentials: true,
   })
 );
