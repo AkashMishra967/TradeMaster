@@ -15,7 +15,7 @@ const Dashboard = () => {
 
   // 🔥 AUTH CHECK (SESSION BASED)
   useEffect(() => {
-    axios.get("http://localhost:3002/me", {
+    axios.get("https://trademaster-backend-u6tl.onrender.com/me", {
       withCredentials: true
     })
     .then((res) => {
@@ -23,7 +23,7 @@ const Dashboard = () => {
     })
     .catch((err) => {
       console.log("Not logged in");
-      window.location.href = "http://localhost:3000";
+      window.location.href = "https://trademaster-5.onrender.com";
     });
   }, []);
 
