@@ -9,7 +9,7 @@ router.get("/allHoldings", async (req, res) => {
   res.json(data);
 });
 
-router.get("/allPositions", async (req, res) => {
+router.get("/api/positions", async (req, res) => {
   const data = await PositionsModel.find({});
   res.json(data);
 });
