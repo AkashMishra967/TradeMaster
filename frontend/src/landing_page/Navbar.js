@@ -5,16 +5,17 @@ function Navbar() {
   return (
     <nav
       className="navbar navbar-expand-lg border-bottom"
-      style={{ backgroundColor: "#fff" }} // ✅ corrected
+      style={{ backgroundColor: "#fff" }}
     >
-      <div className="container py-2">
+      <div className="container-fluid px-3 py-2 d-flex flex-row align-items-center justify-content-between">
         <Link className="navbar-brand" to="/">
           <img
             src="media/images/logo.svg"
-            style={{ width: "25%" }}
+            style={{ width: "120px" }}
             alt="Logo"
           />
         </Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -30,29 +31,19 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/signup">
-                Signup
-              </Link>
+              <Link className="nav-link active" aria-current="page" to="/signup">Signup</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/about">
-                About
-              </Link>
+              <Link className="nav-link active" to="/about">About</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/product">
-                Product
-              </Link>
+              <Link className="nav-link active" to="/product">Product</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/pricing">
-                Pricing
-              </Link>
+              <Link className="nav-link active" to="/pricing">Pricing</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link active" to="/support">
-                Support
-              </Link>
+              <Link className="nav-link active" to="/support">Support</Link>
             </li>
           </ul>
         </div>
