@@ -27,28 +27,7 @@ function HomePage() {
         gap: "15px",       // ✅ spacing fix
         padding: "0 20px", // ✅ mobile pe side padding
       }}>
-        <Link to="/signup">
-          <button style={{
-            padding: "10px 30px",
-            fontSize: "16px",
-            cursor: "pointer",
-            borderRadius: "5px",
-            width: "150px",  // ✅ fixed width
-          }}>
-            Signup
-          </button>
-        </Link>
-        <Link to="/login">
-          <button style={{
-            padding: "10px 30px",
-            fontSize: "16px",
-            cursor: "pointer",
-            borderRadius: "5px",
-            width: "150px",  // ✅ fixed width
-          }}>
-            Login
-          </button>
-        </Link>
+       
       </div>
     </>
   );
