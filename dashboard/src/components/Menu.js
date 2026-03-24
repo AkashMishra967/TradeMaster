@@ -1,72 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) setIsMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
-    setIsMobileMenuOpen(false); // menu band ho jaye click pe
-  };
-
-  const handleProfileClick = () => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+    setIsMobileMenuOpen(false);
   };
 
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
 
+  const links = [
+    { to: "/", label: "Dashboard", index: 0 },
+    { to: "/orders", label: "Orders", index: 1 },
+    { to: "/holdings", label: "Holdings", index: 2 },
+    { to: "/positions", label: "Positions", index: 3 },
+    { to: "/funds", label: "Funds", index: 4 },
+    { to: "/apps", label: "Apps", index: 6 },
+  ];
+
   return (
-    <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }} />
+    <>
+      <div className="menu-container" style={{ position: "relative" }}>
+        <img src="logo.png" style={{ width: "50px" }} />
 
-      {/* 3 line hamburger button - sirf mobile pe dikhega */}
-      <button
-        className="hamburger-btn"
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        {/* Hamburger - sirf mobile pe */}
+        {isMobile && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              width: "24px",
+              height: "18px",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "0",
+            }}
+          >
+            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+          </button>
+        )}
 
-      {/* Desktop menu - normal rahega */}
-      <div className="menus desktop-menus">
-        <ul>
-          <li><Link style={{ textDecoration: "none" }} to="/" onClick={() => handleMenuClick(0)}><p className={selectedMenu === 0 ? activeMenuClass : menuClass}>Dashboard</p></Link></li>
-          <li><Link style={{ textDecoration: "none" }} to="/orders" onClick={() => handleMenuClick(1)}><p className={selectedMenu === 1 ? activeMenuClass : menuClass}>Orders</p></Link></li>
-          <li><Link style={{ textDecoration: "none" }} to="/holdings" onClick={() => handleMenuClick(2)}><p className={selectedMenu === 2 ? activeMenuClass : menuClass}>Holdings</p></Link></li>
-          <li><Link style={{ textDecoration: "none" }} to="/positions" onClick={() => handleMenuClick(3)}><p className={selectedMenu === 3 ? activeMenuClass : menuClass}>Positions</p></Link></li>
-          <li><Link style={{ textDecoration: "none" }} to="/funds" onClick={() => handleMenuClick(4)}><p className={selectedMenu === 4 ? activeMenuClass : menuClass}>Funds</p></Link></li>
-          <li><Link style={{ textDecoration: "none" }} to="/apps" onClick={() => handleMenuClick(6)}><p className={selectedMenu === 6 ? activeMenuClass : menuClass}>Apps</p></Link></li>
-        </ul>
-        <hr />
-        <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
-        </div>
+        {/* Desktop menu */}
+        {!isMobile && (
+          <div className="menus">
+            <ul>
+              {links.map((link) => (
+                <li key={link.index}>
+                  <Link style={{ textDecoration: "none" }} to={link.to} onClick={() => handleMenuClick(link.index)}>
+                    <p className={selectedMenu === link.index ? activeMenuClass : menuClass}>
+                      {link.label}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <hr />
+            <div className="profile">
+              <div className="avatar">ZU</div>
+              <p className="username">USERID</p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Mobile dropdown menu */}
-      {isMobileMenuOpen && (
-        <div className="mobile-menu">
-          <ul>
-            <li><Link style={{ textDecoration: "none" }} to="/" onClick={() => handleMenuClick(0)}><p className={selectedMenu === 0 ? activeMenuClass : menuClass}>Dashboard</p></Link></li>
-            <li><Link style={{ textDecoration: "none" }} to="/orders" onClick={() => handleMenuClick(1)}><p className={selectedMenu === 1 ? activeMenuClass : menuClass}>Orders</p></Link></li>
-            <li><Link style={{ textDecoration: "none" }} to="/holdings" onClick={() => handleMenuClick(2)}><p className={selectedMenu === 2 ? activeMenuClass : menuClass}>Holdings</p></Link></li>
-            <li><Link style={{ textDecoration: "none" }} to="/positions" onClick={() => handleMenuClick(3)}><p className={selectedMenu === 3 ? activeMenuClass : menuClass}>Positions</p></Link></li>
-            <li><Link style={{ textDecoration: "none" }} to="/funds" onClick={() => handleMenuClick(4)}><p className={selectedMenu === 4 ? activeMenuClass : menuClass}>Funds</p></Link></li>
-            <li><Link style={{ textDecoration: "none" }} to="/apps" onClick={() => handleMenuClick(6)}><p className={selectedMenu === 6 ? activeMenuClass : menuClass}>Apps</p></Link></li>
+      {/* Mobile full screen menu */}
+      {isMobile && isMobileMenuOpen && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "#fff",
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "20px",
+          boxSizing: "border-box",
+          overflowY: "auto",
+        }}>
+          {/* Close button */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px 20px", borderBottom: "1px solid #f0f0f0" }}>
+            <img src="logo.png" style={{ width: "50px" }} />
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{ background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", color: "rgb(70,70,70)" }}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Menu links */}
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {links.map((link) => (
+              <li key={link.index} style={{ borderBottom: "1px solid #f5f5f5" }}>
+                <Link
+                  style={{ textDecoration: "none", display: "block", padding: "16px 24px" }}
+                  to={link.to}
+                  onClick={() => handleMenuClick(link.index)}
+                >
+                  <p style={{
+                    margin: 0,
+                    fontSize: "1.1rem",
+                    fontWeight: selectedMenu === link.index ? "500" : "400",
+                    color: selectedMenu === link.index ? "rgb(245, 104, 52)" : "rgb(70, 70, 70)",
+                  }}>
+                    {link.label}
+                  </p>
+                </Link>
+              </li>
+            ))}
           </ul>
-          <div className="profile mobile-profile" onClick={handleProfileClick}>
+
+          {/* Profile */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px 24px", borderTop: "1px solid #f0f0f0", marginTop: "auto" }}>
             <div className="avatar">ZU</div>
-            <p className="username">USERID</p>
+            <p style={{ margin: 0, fontSize: "0.9rem", color: "rgb(70,70,70)" }}>USERID</p>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
