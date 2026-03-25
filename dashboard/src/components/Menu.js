@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) setIsMobileMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -34,109 +24,120 @@ const Menu = () => {
 
   return (
     <>
-      <div className="menu-container" style={{ position: "relative" }}>
+      <div className="menu-container">
         <img src="logo.png" style={{ width: "50px" }} />
 
-        {/* Hamburger - sirf mobile pe */}
-        {isMobile && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              marginLeft: "auto",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              width: "24px",
-              height: "18px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "0",
-            }}
-          >
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-          </button>
-        )}
+        {/* ✅ Hamburger (ALWAYS render) */}
+        <button
+          className="hamburger"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-        {/* Desktop menu */}
-        {!isMobile && (
-          <div className="menus">
-            <ul>
-              {links.map((link) => (
-                <li key={link.index}>
-                  <Link style={{ textDecoration: "none" }} to={link.to} onClick={() => handleMenuClick(link.index)}>
-                    <p className={selectedMenu === link.index ? activeMenuClass : menuClass}>
-                      {link.label}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <hr />
-            <div className="profile">
-              <div className="avatar">ZU</div>
-              <p className="username">USERID</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Mobile full screen menu */}
-      {isMobile && isMobileMenuOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "#fff",
-          zIndex: 9999,
-          display: "flex",
-          flexDirection: "column",
-          paddingTop: "20px",
-          boxSizing: "border-box",
-          overflowY: "auto",
-        }}>
-          {/* Close button */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px 20px", borderBottom: "1px solid #f0f0f0" }}>
-            <img src="logo.png" style={{ width: "50px" }} />
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              style={{ background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", color: "rgb(70,70,70)" }}
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Menu links */}
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {/* ✅ Desktop Menu */}
+        <div className="menus">
+          <ul>
             {links.map((link) => (
-              <li key={link.index} style={{ borderBottom: "1px solid #f5f5f5" }}>
+              <li key={link.index}>
                 <Link
-                  style={{ textDecoration: "none", display: "block", padding: "16px 24px" }}
+                  style={{ textDecoration: "none" }}
                   to={link.to}
                   onClick={() => handleMenuClick(link.index)}
                 >
-                  <p style={{
-                    margin: 0,
-                    fontSize: "1.1rem",
-                    fontWeight: selectedMenu === link.index ? "500" : "400",
-                    color: selectedMenu === link.index ? "rgb(245, 104, 52)" : "rgb(70, 70, 70)",
-                  }}>
+                  <p
+                    className={
+                      selectedMenu === link.index
+                        ? activeMenuClass
+                        : menuClass
+                    }
+                  >
                     {link.label}
                   </p>
                 </Link>
               </li>
             ))}
           </ul>
-
-          {/* Profile */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px 24px", borderTop: "1px solid #f0f0f0", marginTop: "auto" }}>
+          <hr />
+          <div className="profile">
             <div className="avatar">ZU</div>
-            <p style={{ margin: 0, fontSize: "0.9rem", color: "rgb(70,70,70)" }}>USERID</p>
+            <p className="username">USERID</p>
           </div>
+        </div>
+      </div>
+
+      {/* ✅ Mobile Full Screen Menu */}
+      {isMobileMenuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "#fff",
+            zIndex: 9999,
+            display: "flex",
+            flexDirection: "column",
+            paddingTop: "20px",
+            overflowY: "auto",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px 20px 20px",
+              borderBottom: "1px solid #f0f0f0",
+            }}
+          >
+            <img src="logo.png" style={{ width: "50px" }} />
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{
+                background: "none",
+                border: "none",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Links */}
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {links.map((link) => (
+              <li key={link.index}>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    display: "block",
+                    padding: "16px 24px",
+                  }}
+                  to={link.to}
+                  onClick={() => handleMenuClick(link.index)}
+                >
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "1.1rem",
+                      color:
+                        selectedMenu === link.index
+                          ? "rgb(245, 104, 52)"
+                          : "rgb(70, 70, 70)",
+                    }}
+                  >
+                    {link.label}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </>
