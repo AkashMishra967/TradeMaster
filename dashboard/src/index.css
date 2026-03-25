@@ -912,8 +912,11 @@ hr {
     box-sizing: border-box !important;
     justify-content: space-between !important;
   }
-
-  .desktop-menus {
+@media (max-width: 768px) {
+  .menus {
     display: none !important;
   }
+}
+
+
 }
