@@ -325,7 +325,6 @@ hr {
 }
 
 /* sudo selectors */
-
 .menu:hover {
   color: rgb(245, 104, 52);
 }
@@ -408,11 +407,11 @@ hr {
 }
 
 .order-table tr td:first-child p {
-    background: rgb(255, 197, 197);
-    color: rgb(233, 120, 120);
-    width: 50%;
-    text-align: center;
-    border-radius: 2px;
+  background: rgb(255, 197, 197);
+  color: rgb(233, 120, 120);
+  width: 50%;
+  text-align: center;
+  border-radius: 2px;
 }
 
 .order-table tr td:last-child {
@@ -846,7 +845,6 @@ hr {
 /* ===== MOBILE COMPLETE FIX ===== */
 @media (max-width: 768px) {
 
-  /* MAIN FIX - overlap band */
   .dashboard-container {
     flex-direction: column !important;
     height: auto !important;
@@ -912,11 +910,10 @@ hr {
     box-sizing: border-box !important;
     justify-content: space-between !important;
   }
-@media (max-width: 768px) {
+
+  /* ✅ FIX - nested @media hata ke yahan daal diya */
   .menus {
     display: none !important;
   }
-}
-
 
 }
