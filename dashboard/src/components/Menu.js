@@ -4,15 +4,16 @@ import { Link } from "react-router-dom";
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false); // ✅ FIX
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) setIsMobileMenuOpen(false);
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsMobileMenuOpen(false);
     };
 
-    checkMobile(); // ✅ FIX: mount pe turant check
+    checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -36,56 +37,45 @@ const Menu = () => {
 
   return (
     <>
-      <div className="menu-container" style={{ position: "relative" }}>
-        <img src="logo.png" style={{ width: "50px" }} />
+      <div className="menu-container">
+        <img src="logo.png" style={{ width: "50px" }} alt="logo" />
 
-        {/* Hamburger - sirf mobile pe */}
-        {isMobile && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            style={{
-              marginLeft: "auto",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              width: "24px",
-              height: "18px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "0",
-            }}
-          >
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-            <span style={{ display: "block", width: "100%", height: "2px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-          </button>
-        )}
+        {/* ✅ Hamburger - CSS se mobile pe show hoga, desktop pe hidden */}
+        <button
+          className="hamburger-btn"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-        {/* Desktop menu */}
-        {!isMobile && (
-          <div className="menus">
-            <ul>
-              {links.map((link) => (
-                <li key={link.index}>
-                  <Link style={{ textDecoration: "none" }} to={link.to} onClick={() => handleMenuClick(link.index)}>
-                    <p className={selectedMenu === link.index ? activeMenuClass : menuClass}>
-                      {link.label}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <hr />
-            <div className="profile">
-              <div className="avatar">ZU</div>
-              <p className="username">USERID</p>
-            </div>
+        {/* Desktop menu - CSS se mobile pe hide hoga */}
+        <div className="menus">
+          <ul>
+            {links.map((link) => (
+              <li key={link.index}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={link.to}
+                  onClick={() => handleMenuClick(link.index)}
+                >
+                  <p className={selectedMenu === link.index ? activeMenuClass : menuClass}>
+                    {link.label}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <hr />
+          <div className="profile">
+            <div className="avatar">ZU</div>
+            <p className="username">USERID</p>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Mobile full screen menu */}
+      {/* Mobile fullscreen menu - React state se control */}
       {isMobile && isMobileMenuOpen && (
         <div style={{
           position: "fixed",
@@ -97,16 +87,27 @@ const Menu = () => {
           zIndex: 9999,
           display: "flex",
           flexDirection: "column",
-          paddingTop: "20px",
           boxSizing: "border-box",
           overflowY: "auto",
         }}>
           {/* Close button */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px 20px", borderBottom: "1px solid #f0f0f0" }}>
-            <img src="logo.png" style={{ width: "50px" }} />
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "16px 20px",
+            borderBottom: "1px solid #f0f0f0"
+          }}>
+            <img src="logo.png" style={{ width: "50px" }} alt="logo" />
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              style={{ background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", color: "rgb(70,70,70)" }}
+              style={{
+                background: "none",
+                border: "none",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+                color: "rgb(70,70,70)"
+              }}
             >
               ✕
             </button>
@@ -135,7 +136,14 @@ const Menu = () => {
           </ul>
 
           {/* Profile */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px 24px", borderTop: "1px solid #f0f0f0", marginTop: "auto" }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "16px 24px",
+            borderTop: "1px solid #f0f0f0",
+            marginTop: "auto"
+          }}>
             <div className="avatar">ZU</div>
             <p style={{ margin: 0, fontSize: "0.9rem", color: "rgb(70,70,70)" }}>USERID</p>
           </div>
