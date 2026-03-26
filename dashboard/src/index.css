@@ -933,3 +933,32 @@ hr {
     box-sizing: border-box !important;
   }
 }
+/* mobile dropdown menu */
+@media (max-width: 768px) {
+
+  .menus {
+    display: none !important;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    z-index: 999;
+  }
+
+  .menus.active {
+    display: flex !important;
+  }
+
+  .menus ul {
+    width: 100%;
+    padding: 0;
+  }
+
+  .menus li {
+    display: block;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+  }
+}

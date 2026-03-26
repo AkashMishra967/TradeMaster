@@ -1,22 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      if (!mobile) setIsMobileMenuOpen(false);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -40,7 +27,7 @@ const Menu = () => {
       <div className="menu-container">
         <img src="logo.png" style={{ width: "50px" }} alt="logo" />
 
-        {/* ✅ Hamburger - CSS se mobile pe show hoga, desktop pe hidden */}
+        {/* ✅ Hamburger button */}
         <button
           className="hamburger-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -50,7 +37,7 @@ const Menu = () => {
           <span></span>
         </button>
 
-        {/* Desktop menu - CSS se mobile pe hide hoga */}
+        {/* ✅ Desktop Menu */}
         <div className="menus">
           <ul>
             {links.map((link) => (
@@ -75,29 +62,31 @@ const Menu = () => {
         </div>
       </div>
 
-      {/* Mobile fullscreen menu - React state se control */}
-      {isMobile && isMobileMenuOpen && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "#fff",
-          zIndex: 9999,
-          display: "flex",
-          flexDirection: "column",
-          boxSizing: "border-box",
-          overflowY: "auto",
-        }}>
-          {/* Close button */}
-          <div style={{
+      {/* ✅ Mobile Fullscreen Menu (NO isMobile condition) */}
+      {isMobileMenuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "#fff",
+            zIndex: 9999,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px 20px",
-            borderBottom: "1px solid #f0f0f0"
-          }}>
+            flexDirection: "column",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "16px 20px",
+              borderBottom: "1px solid #f0f0f0",
+            }}
+          >
             <img src="logo.png" style={{ width: "50px" }} alt="logo" />
             <button
               onClick={() => setIsMobileMenuOpen(false)}
@@ -106,28 +95,36 @@ const Menu = () => {
                 border: "none",
                 fontSize: "1.5rem",
                 cursor: "pointer",
-                color: "rgb(70,70,70)"
               }}
             >
               ✕
             </button>
           </div>
 
-          {/* Menu links */}
+          {/* Menu Items */}
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             {links.map((link) => (
               <li key={link.index} style={{ borderBottom: "1px solid #f5f5f5" }}>
                 <Link
-                  style={{ textDecoration: "none", display: "block", padding: "16px 24px" }}
                   to={link.to}
                   onClick={() => handleMenuClick(link.index)}
+                  style={{
+                    textDecoration: "none",
+                    display: "block",
+                    padding: "16px 24px",
+                  }}
                 >
-                  <p style={{
-                    margin: 0,
-                    fontSize: "1.1rem",
-                    fontWeight: selectedMenu === link.index ? "500" : "400",
-                    color: selectedMenu === link.index ? "rgb(245, 104, 52)" : "rgb(70, 70, 70)",
-                  }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "1.1rem",
+                      fontWeight: selectedMenu === link.index ? "500" : "400",
+                      color:
+                        selectedMenu === link.index
+                          ? "rgb(245, 104, 52)"
+                          : "rgb(70, 70, 70)",
+                    }}
+                  >
                     {link.label}
                   </p>
                 </Link>
@@ -136,16 +133,18 @@ const Menu = () => {
           </ul>
 
           {/* Profile */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            padding: "16px 24px",
-            borderTop: "1px solid #f0f0f0",
-            marginTop: "auto"
-          }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "16px 24px",
+              borderTop: "1px solid #f0f0f0",
+              marginTop: "auto",
+            }}
+          >
             <div className="avatar">ZU</div>
-            <p style={{ margin: 0, fontSize: "0.9rem", color: "rgb(70,70,70)" }}>USERID</p>
+            <p style={{ margin: 0 }}>USERID</p>
           </div>
         </div>
       )}
