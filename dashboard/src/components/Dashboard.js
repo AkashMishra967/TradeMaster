@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import TopBar from "./TopBar";
 import axios from "axios";
 import { Route, Routes } from "react-router-dom";
 
@@ -13,21 +14,7 @@ import { GeneralContextProvider } from "./GeneralContext";
 
 const Dashboard = () => {
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // 🔥 screen check
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // 🔥 AUTH CHECK
+  // 🔥 AUTH CHECK (SESSION BASED)
   useEffect(() => {
     axios.get("https://trademaster-backend-u6tl.onrender.com/me", {
       withCredentials: true
@@ -43,13 +30,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-
-      {/* 🔥 MOBILE pe WatchList hide */}
-      {!isMobile && (
-        <GeneralContextProvider>
-          <WatchList />
-        </GeneralContextProvider>
-      )}
+      <GeneralContextProvider>
+        <WatchList />
+      </GeneralContextProvider>
+      <TopBar />
 
       <div className="content">
         <Routes>
@@ -61,7 +45,6 @@ const Dashboard = () => {
           <Route path="/apps" element={<Apps />} />
         </Routes>
       </div>
-
     </div>
   );
 };
