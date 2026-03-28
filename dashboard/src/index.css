@@ -262,23 +262,27 @@ code {
   height: 20px;
 }
 
+/* ✅ Hamburger - desktop pe hidden */
 .hamburger-btn {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
+  width: 30px;
+  height: 22px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   margin-left: auto;
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 10;
 }
 
 .hamburger-btn span {
   display: block;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background: rgb(70, 70, 70);
   border-radius: 2px;
 }
@@ -855,10 +859,9 @@ hr {
   background-color: rgb(212, 212, 212);
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
+/* ===== MOBILE - Samsung S24 & sab phones ke liye ===== */
+@media screen and (max-width: 1024px) {
 
-  /* Topbar - ek hi row mein raho */
   .topbar-container {
     flex-direction: row !important;
     height: auto !important;
@@ -887,7 +890,7 @@ hr {
     height: 100% !important;
   }
 
-  /* Hamburger show karo */
+  /* ✅ Hamburger show karo */
   .hamburger-btn {
     display: flex !important;
   }
