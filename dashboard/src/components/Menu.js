@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
- useEffect(() => {
-  const checkMobile = () => {
-    setIsMobile(window.innerWidth <= 768);
-  };
-
-  checkMobile(); // 👈 ye important hai
-  window.addEventListener("resize", checkMobile);
-
-  return () => window.removeEventListener("resize", checkMobile);
-}, []);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -39,7 +27,6 @@ const Menu = () => {
       <div className="menu-container">
         <img src="logo.png" style={{ width: "50px" }} alt="logo" />
 
-        {/* ✅ Hamburger - CSS se mobile pe show hoga, desktop pe hidden */}
         <button
           className="hamburger-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -49,7 +36,6 @@ const Menu = () => {
           <span></span>
         </button>
 
-        {/* Desktop menu - CSS se mobile pe hide hoga */}
         <div className="menus">
           <ul>
             {links.map((link) => (
@@ -74,8 +60,8 @@ const Menu = () => {
         </div>
       </div>
 
-      {/* Mobile fullscreen menu - React state se control */}
-      {isMobile && isMobileMenuOpen && (
+      {/* Mobile fullscreen menu */}
+      {isMobileMenuOpen && (
         <div style={{
           position: "fixed",
           top: 0,

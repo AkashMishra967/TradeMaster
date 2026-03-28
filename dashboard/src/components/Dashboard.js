@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import TopBar from "./TopBar";
+
 import axios from "axios";
 import { Route, Routes } from "react-router-dom";
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
       <GeneralContextProvider>
         <WatchList />
       </GeneralContextProvider>
-      <TopBar />
+      
 
       <div className="content">
         <Routes>
