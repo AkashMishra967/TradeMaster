@@ -890,14 +890,18 @@ hr {
     height: 100% !important;
   }
 
-  /* ✅ Hamburger show karo */
+  /* ✅ Hamburger show karo - real mobile devices */
   .hamburger-btn {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   /* Desktop menu hide karo */
   .menus {
     display: none !important;
+    visibility: hidden !important;
   }
 
   /* Dashboard */

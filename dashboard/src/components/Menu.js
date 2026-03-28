@@ -27,15 +27,29 @@ const Menu = () => {
       <div className="menu-container">
         <img src="logo.png" style={{ width: "50px" }} alt="logo" />
 
+        {/* ✅ Hamburger - inline style se force show on mobile */}
         <button
-          className="hamburger-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{
+            display: "none",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            width: "30px",
+            height: "22px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "0",
+            marginLeft: "auto",
+          }}
+          className="hamburger-btn"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
         </button>
 
+        {/* Desktop menu */}
         <div className="menus">
           <ul>
             {links.map((link) => (
