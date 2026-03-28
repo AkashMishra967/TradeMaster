@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
     setIsMobileMenuOpen(false);
   };
-
-  const menuClass = "menu";
-  const activeMenuClass = "menu selected";
 
   const links = [
     { to: "/", label: "Dashboard", index: 0 },
@@ -24,62 +30,79 @@ const Menu = () => {
 
   return (
     <>
-      <div className="menu-container">
+      <div style={{
+        flexBasis: isMobile ? "0" : "68%",
+        flexGrow: isMobile ? 1 : 0,
+        height: "100%",
+        padding: isMobile ? "8px 12px" : "10px 20px",
+        boxSizing: "border-box",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}>
         <img src="logo.png" style={{ width: "50px" }} alt="logo" />
 
-        {/* ✅ Hamburger - inline style se force show on mobile */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          style={{
-            display: "none",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            width: "30px",
-            height: "22px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: "0",
-            marginLeft: "auto",
-          }}
-          className="hamburger-btn"
-        >
-          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-          <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
-        </button>
+        {/* Hamburger - sirf mobile pe dikhega React se */}
+        {isMobile && (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              width: "30px",
+              height: "22px",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "0",
+              marginLeft: "auto",
+            }}
+          >
+            <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+            <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+            <span style={{ display: "block", width: "100%", height: "3px", background: "rgb(70,70,70)", borderRadius: "2px" }}></span>
+          </button>
+        )}
 
-        {/* Desktop menu */}
-        <div className="menus">
-          <ul>
-            {links.map((link) => (
-              <li key={link.index}>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={link.to}
-                  onClick={() => handleMenuClick(link.index)}
-                >
-                  <p className={selectedMenu === link.index ? activeMenuClass : menuClass}>
-                    {link.label}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <hr />
-          <div className="profile">
-            <div className="avatar">ZU</div>
-            <p className="username">USERID</p>
+        {/* Desktop menu - sirf desktop pe dikhega React se */}
+        {!isMobile && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
+            <ul style={{ listStyleType: "none", display: "flex", margin: 0, padding: 0 }}>
+              {links.map((link) => (
+                <li key={link.index} style={{ display: "inline-block", marginRight: "30px" }}>
+                  <Link style={{ textDecoration: "none" }} to={link.to} onClick={() => handleMenuClick(link.index)}>
+                    <p style={{
+                      fontSize: "0.8rem",
+                      fontWeight: "400",
+                      color: selectedMenu === link.index ? "rgb(245, 104, 52)" : "rgb(70, 70, 70)",
+                      margin: 0,
+                    }}>
+                      {link.label}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <hr style={{ borderLeft: "0.8px solid rgb(243,242,242)", height: "30px", margin: "0 10px" }} />
+            <div style={{ display: "flex", alignItems: "center", marginLeft: "20px" }}>
+              <div style={{
+                width: "30px", height: "30px", fontSize: "0.7rem", fontWeight: "400",
+                color: "rgb(221,139,221)", borderRadius: "100%", display: "flex",
+                justifyContent: "center", alignItems: "center",
+                background: "rgb(252,229,252)", marginRight: "8px",
+              }}>ZU</div>
+              <p style={{ fontSize: "0.8rem", fontWeight: "300", margin: 0 }}>USERID</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Mobile fullscreen menu */}
       {isMobileMenuOpen && (
         <div style={{
           position: "fixed",
-          top: 0,
-          left: 0,
+          top: 0, left: 0,
           width: "100vw",
           height: "100vh",
           background: "#fff",
@@ -89,7 +112,6 @@ const Menu = () => {
           boxSizing: "border-box",
           overflowY: "auto",
         }}>
-          {/* Close button */}
           <div style={{
             display: "flex",
             justifyContent: "space-between",
@@ -98,21 +120,12 @@ const Menu = () => {
             borderBottom: "1px solid #f0f0f0"
           }}>
             <img src="logo.png" style={{ width: "50px" }} alt="logo" />
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              style={{
-                background: "none",
-                border: "none",
-                fontSize: "1.5rem",
-                cursor: "pointer",
-                color: "rgb(70,70,70)"
-              }}
-            >
-              ✕
-            </button>
+            <button onClick={() => setIsMobileMenuOpen(false)} style={{
+              background: "none", border: "none",
+              fontSize: "1.5rem", cursor: "pointer", color: "rgb(70,70,70)"
+            }}>✕</button>
           </div>
 
-          {/* Menu links */}
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             {links.map((link) => (
               <li key={link.index} style={{ borderBottom: "1px solid #f5f5f5" }}>
@@ -134,16 +147,15 @@ const Menu = () => {
             ))}
           </ul>
 
-          {/* Profile */}
           <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            padding: "16px 24px",
-            borderTop: "1px solid #f0f0f0",
-            marginTop: "auto"
+            display: "flex", alignItems: "center", gap: "10px",
+            padding: "16px 24px", borderTop: "1px solid #f0f0f0", marginTop: "auto"
           }}>
-            <div className="avatar">ZU</div>
+            <div style={{
+              width: "30px", height: "30px", fontSize: "0.7rem",
+              color: "rgb(221,139,221)", borderRadius: "100%", display: "flex",
+              justifyContent: "center", alignItems: "center", background: "rgb(252,229,252)"
+            }}>ZU</div>
             <p style={{ margin: 0, fontSize: "0.9rem", color: "rgb(70,70,70)" }}>USERID</p>
           </div>
         </div>
